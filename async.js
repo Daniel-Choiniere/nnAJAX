@@ -1,68 +1,39 @@
 /*global $*/
 window.onload = function() {
 
-    function handleError(jqXHR, textStatus, error){
-        console.log(error);
-    }
+// ES6 METHOD OF CREATING AND USING PROMISES
+    // function get(url){
+    //     return new Promise(function(resolve, reject){
+    //         let xhttp = new XMLHttpRequest();
+    //         xhttp.open("GET", url, true);
+    //         xhttp.onload = function(){
+    //             if (xhttp.status == 200){
+    //                 resolve(JSON.parse(xhttp.response));
+    //             } else {
+    //                 reject(xhttp.statusText);
+    //             }
+    //         };
+    //         xhttp.onerror = function(){
+    //           reject(xhttp.statusText);  
+    //         };
+    //         xhttp.send();
+    //     });
+    // }
     
-//  // CALLBACK FUNCTION "HELL" 
-//     $.ajax({
-//         type: "GET",
-//         url: "tweets.json",
-//         success: function(data){
-//             console.log(data);
-            
-//             $.ajax({
-//                 type: "GET",
-//                 url: "friends.json",
-//                     success: function(data){
-//                         console.log(data);
-                
-//                 $.ajax({
-//                     type: "GET",
-//                     url: "videos.json",
-//                         success: function(data){
-//                             console.log(data);
-//         },
-//         error: handleError
-//     });
-//             },
-//             error: handleError
-//         });
-//                 },
-//                 error: handleError
-//             });
-
-// 
-    // CLEANER WAY TO HANDLE MULTIPLE SEQUENTIAL CALLBACKS USING ASYNCHRNOUS FUNCTIONS 
-    // (STILL NOT BEST WAY, PROMISES ARE AN EVEN BETTER WAY (WILL COVER IN NEXT VERSION)
-    $.ajax({
-        type: 'GET',
-        url: "tweets.json",
-        success: cbTweets,
-        error: handleError
-    });
+    // let promise = get("tweets.json");
+    // promise.then(function(tweets){
+    //   console.log(tweets);
+    //   return get("friends.json");
+    // }).then(function(friends){
+    //     console.log(friends);
+    //     return get("videos.json");
+    // }).then(function(videos){
+    //     console.log(videos);
+    //     }).catch(function(error){
+    //   console.log(error);  
+    // });
     
-    function cbTweets(data){
-        console.log(data);
-        $.ajax({
-            type: 'GET',
-            url: "friends.json",
-            success: cbFriends,
-            error: handleError
-        });
-        
-    }
     
-    function cbFriends(data) {
-        console.log(data);
-        $.ajax({
-            type: 'GET',
-            url: "videos.json",
-            success: function(data){
-                console.log(data);
-            },
-            error: handleError
-        });
-    }
-};                                                                                                                                                                                                                                                                          
+    // JQUERY METHOD OF CREATING AND USING PROMISES
+    
+};            
