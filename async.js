@@ -1,47 +1,42 @@
 /*global $*/
 window.onload = function() {
-
-// ES6 METHOD OF CREATING AND USING PROMISES
-    // function get(url){
-    //     return new Promise(function(resolve, reject){
-    //         let xhttp = new XMLHttpRequest();
-    //         xhttp.open("GET", url, true);
-    //         xhttp.onload = function(){
-    //             if (xhttp.status == 200){
-    //                 resolve(JSON.parse(xhttp.response));
-    //             } else {
-    //                 reject(xhttp.statusText);
-    //             }
-    //         };
-    //         xhttp.onerror = function(){
-    //           reject(xhttp.statusText);  
-    //         };
-    //         xhttp.send();
-    //     });
+    // example of a JS generator, use the * to declare a generator
+    // function* gen(){
+    //     let x = yield 10;
+    //     console.log(x);
     // }
     
-    // let promise = get("tweets.json");
-    // promise.then(function(tweets){
-    //   console.log(tweets);
-    //   return get("friends.json");
-    // }).then(function(friends){
-    //     console.log(friends);
-    //     return get("videos.json");
-    // }).then(function(videos){
-    //     console.log(videos);
-    //     }).catch(function(error){
-    //   console.log(error);  
-    // });
+    //     // first time myGen is fired it yields the result from the function - result is 10 and done property id FALSE
+    // let myGen = gen();
+    // console.log(myGen.next());
+    //     // second time myGen is fired there is nothing to yield - result is undefined and done property is TRUE
+    // console.log(myGen.next());
+    //     // can pass a value back to the generator by including value in parentheses
+    // console.log(myGen.next(10));
     
     
-    // JQUERY METHOD OF CREATING AND USING PROMISES
-    $.get("tweets.json").then(function(tweets){
-       console.log(tweets); 
-       return $.get("friends.json").then(function(friends){
-           console.log(friends);
-        return $.get("videos.json").then(function(videos){
-            console.log(videos);
-        });
-       });
+    genWrap(function* (){
+        var tweets = yield $.get("tweets.json");
+        console.log(tweets);
+        var friends = yield $.get("friends.json");
+        console.log(friends);
+        var videos = yield $.get("videos.json");
+        console.log(videos);
     });
+    
+    function genWrap(generator) {
+        
+        let gen = generator();
+        
+        function handle(yielded){
+            if(!yielded.done){
+                yielded.value.then(function(data){
+                    return handle(gen.next(data));
+                })
+            }
+        }
+        
+        return handle(gen.next());
+    }
 };            
+
