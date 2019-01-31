@@ -1,25 +1,68 @@
 /*global $*/
 window.onload = function() {
 
-    //SYNCCHRNOUS CALLBACK FUNCTION 
-    // function callback(val){
-    //        console.log(val);
-    //    }
-
-    //    let fruits = ["bannana", "apple", "pear"];
-    //    fruits.forEach(callback);
-
-    // ASYNCHRONOUS CALLBACK FUNCTION
-//     $.get("tweets.json", function(data) {
-//         console.log(data);
+    function handleError(jqXHR, textStatus, error){
+        console.log(error);
+    }
+    
+//  // CALLBACK FUNCTION "HELL" 
+//     $.ajax({
+//         type: "GET",
+//         url: "tweets.json",
+//         success: function(data){
+//             console.log(data);
+            
+//             $.ajax({
+//                 type: "GET",
+//                 url: "friends.json",
+//                     success: function(data){
+//                         console.log(data);
+                
+//                 $.ajax({
+//                     type: "GET",
+//                     url: "videos.json",
+//                         success: function(data){
+//                             console.log(data);
+//         },
+//         error: handleError
 //     });
+//             },
+//             error: handleError
+//         });
+//                 },
+//                 error: handleError
+//             });
 
-//     // or //
+// 
+    // CLEANER WAY TO HANDLE MULTIPLE SEQUENTIAL CALLBACKS USING ASYNCHRNOUS FUNCTIONS 
+    // (STILL NOT BEST WAY, PROMISES ARE AN EVEN BETTER WAY (WILL COVER IN NEXT VERSION)
+    $.ajax({
+        type: 'GET',
+        url: "tweets.json",
+        success: cbTweets,
+        error: handleError
+    });
     
-//     function cb(data){
-//         console.log(data);
-//     }
+    function cbTweets(data){
+        console.log(data);
+        $.ajax({
+            type: 'GET',
+            url: "friends.json",
+            success: cbFriends,
+            error: handleError
+        });
+        
+    }
     
-//     $.get("tweets.json", cb);
-//         console.log("test");
-};
+    function cbFriends(data) {
+        console.log(data);
+        $.ajax({
+            type: 'GET',
+            url: "videos.json",
+            success: function(data){
+                console.log(data);
+            },
+            error: handleError
+        });
+    }
+};                                                                                                                                                                                                                                                                          
