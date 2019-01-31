@@ -35,5 +35,14 @@ window.onload = function() {
     
     
     // JQUERY METHOD OF CREATING AND USING PROMISES
+    $.get("tweets.json").then(function(tweets){
+       console.log(tweets); 
+       return $.get("friends.json").then(function(friends){
+           console.log(friends);
+        return $.get("videos.json").then(function(videos){
+            console.log(videos);
+        });
+       });
+    });
     
 };            
